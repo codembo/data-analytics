@@ -1,2 +1,7 @@
-models/*.csv
-models/*.pkl
+models/X_train.csv
+models/X_test.csv
+models/y_train.csv
+models/y_test.csv
+__pycache__/
+*.pyc
+.DS_Store
