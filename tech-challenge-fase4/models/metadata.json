@@ -1,0 +1,86 @@
+{
+  "feature_cols": [
+    "Gender",
+    "Age",
+    "Height",
+    "Weight",
+    "family_history",
+    "FAVC",
+    "FCVC",
+    "NCP",
+    "CAEC",
+    "SMOKE",
+    "CH2O",
+    "SCC",
+    "FAF",
+    "TUE",
+    "CALC",
+    "MTRANS_Automobile",
+    "MTRANS_Bike",
+    "MTRANS_Motorbike",
+    "MTRANS_Public_Transportation",
+    "MTRANS_Walking"
+  ],
+  "target_map": {
+    "Insufficient_Weight": 0,
+    "Normal_Weight": 1,
+    "Overweight_Level_I": 2,
+    "Overweight_Level_II": 3,
+    "Obesity_Type_I": 4,
+    "Obesity_Type_II": 5,
+    "Obesity_Type_III": 6
+  },
+  "reverse_map": {
+    "0": "Insufficient_Weight",
+    "1": "Normal_Weight",
+    "2": "Overweight_Level_I",
+    "3": "Overweight_Level_II",
+    "4": "Obesity_Type_I",
+    "5": "Obesity_Type_II",
+    "6": "Obesity_Type_III"
+  },
+  "order": [
+    "Insufficient_Weight",
+    "Normal_Weight",
+    "Overweight_Level_I",
+    "Overweight_Level_II",
+    "Obesity_Type_I",
+    "Obesity_Type_II",
+    "Obesity_Type_III"
+  ],
+  "labels_pt": [
+    "Peso insuficiente",
+    "Peso normal",
+    "Sobrepeso I",
+    "Sobrepeso II",
+    "Obesidade I",
+    "Obesidade II",
+    "Obesidade III"
+  ],
+  "binary_map": {
+    "yes": 1,
+    "no": 0,
+    "Female": 0,
+    "Male": 1
+  },
+  "freq_map": {
+    "no": 0,
+    "Sometimes": 1,
+    "Frequently": 2,
+    "Always": 3
+  },
+  "mtrans_cols": [
+    "MTRANS_Automobile",
+    "MTRANS_Bike",
+    "MTRANS_Motorbike",
+    "MTRANS_Public_Transportation",
+    "MTRANS_Walking"
+  ],
+  "round_cols": [
+    "FCVC",
+    "NCP",
+    "CH2O",
+    "FAF",
+    "TUE"
+  ]
+}
