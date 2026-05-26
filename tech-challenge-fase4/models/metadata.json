@@ -82,5 +82,16 @@
     "CH2O",
     "FAF",
     "TUE"
-  ]
+  ],
+  "modelo": {
+    "nome": "GradientBoostingClassifier",
+    "acuracia": 0.9574,
+    "f1_macro": 0.9563,
+    "parametros": {
+      "n_estimators": 300,
+      "max_depth": 5,
+      "learning_rate": 0.1,
+      "subsample": 0.8
+    }
+  }
 }
