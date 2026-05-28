@@ -1,7 +1,7 @@
-models/X_train.csv
-models/X_test.csv
-models/y_train.csv
-models/y_test.csv
+tech-challenge-fase4/models/X_train.csv
+tech-challenge-fase4/models/X_test.csv
+tech-challenge-fase4/models/y_train.csv
+tech-challenge-fase4/models/y_test.csv
 __pycache__/
 *.pyc
 .DS_Store
