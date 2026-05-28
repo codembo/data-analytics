@@ -1,39 +1,58 @@
-# 🏥 Tech Challenge — Fase 4 | Data Analytics
-### Sistema Preditivo de Obesidade
+<div align="center">
 
-**FIAP PósTech — Data Analytics**
+# 🏥 Sistema Preditivo de Obesidade
 
-**Grupo:**
-- Misael Oliveira
-- Gustavo Bacelar Horita
-- Álvaro de Freitas Pinto
-- Victor Fernando Gil
+**FIAP PósTech — Data Analytics | Tech Challenge Fase 4**
+
+[![App ao vivo](https://img.shields.io/badge/🚀_App_Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://data-analytics-fase4.streamlit.app/)
+[![Acurácia](https://img.shields.io/badge/Acurácia-95.7%25-4CAF50?style=for-the-badge)]()
+[![F1 Macro](https://img.shields.io/badge/F1--macro-95.6%25-4CAF50?style=for-the-badge)]()
+[![Python](https://img.shields.io/badge/Python-3.11-3776AB?style=for-the-badge&logo=python&logoColor=white)]()
+[![Streamlit](https://img.shields.io/badge/Streamlit-1.32-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)]()
+
+</div>
 
 ---
 
 ## 📌 Sobre o projeto
 
-Desenvolvido como parte do Tech Challenge da Fase 4 do curso de Data Analytics da FIAP PósTech, este projeto consiste em um sistema preditivo para auxiliar a equipe médica a diagnosticar o nível de obesidade de pacientes com base em dados comportamentais, físicos e histórico familiar.
+Sistema de apoio à decisão clínica desenvolvido para o Tech Challenge da Fase 4 do curso de **Data Analytics da FIAP PósTech**. O objetivo é auxiliar equipes médicas a prever o nível de obesidade de pacientes com base em dados comportamentais, físicos e histórico familiar.
+
+> ⚕️ **Aviso clínico:** Esta ferramenta é um sistema de apoio à decisão e não substitui a avaliação do profissional de saúde.
 
 ---
 
-## 🔗 Links
+## 👥 Grupo
+
+| Nome |
+|---|
+| Misael Oliveira |
+| Gustavo Bacelar Horita |
+| Álvaro de Freitas Pinto |
+| Victor Fernando Gil |
+
+---
+
+## 🔗 Links de entrega
 
 | Recurso | Link |
 |---|---|
-| 🚀 App Streamlit (deploy) | https://data-analytics-fase4.streamlit.app/ |
-| 📁 Repositório GitHub | https://github.com/codembo/data-analytics |
+| 🚀 App Streamlit (sistema preditivo + dashboard) | https://data-analytics-fase4.streamlit.app/ |
+| 📊 Dashboard analítico | https://data-analytics-fase4.streamlit.app/ → aba "Dashboard Analítico" |
+| 💻 Repositório GitHub | https://github.com/codembo/data-analytics |
 
 ---
 
-## 🎯 Resultados do modelo
+## 🎯 Resultados
 
 | Métrica | Valor |
 |---|---|
 | Algoritmo | GradientBoostingClassifier |
-| Acurácia (teste) | **95.7%** |
+| Acurácia no teste | **95.7%** |
 | F1-score macro | **95.6%** |
-| Meta FIAP (>75%) | ✅ Atingida |
+| Validação cruzada (5-fold) | **96.3% ± 0.3%** |
+| Meta FIAP (>75%) | ✅ Superada em +20.7pp |
+| Fairness (Feminino vs Masculino) | ✅ Δ 2.5pp — dentro do limite aceitável |
 
 ---
 
@@ -41,23 +60,26 @@ Desenvolvido como parte do Tech Challenge da Fase 4 do curso de Data Analytics d
 
 ```
 tech-challenge-fase4/
-├── app.py                          # App Streamlit (preditivo + dashboard)
-├── requirements.txt                # Dependências
+├── app.py                          # App Streamlit (3 abas)
+├── requirements.txt                # Dependências com versões fixas
 ├── data/
-│   └── Obesity.csv                 # Dataset original
+│   └── Obesity.csv                 # Dataset original (2.111 registros)
 ├── models/
-│   ├── modelo_obesidade.pkl        # Modelo treinado (GBM)
-│   ├── scaler.pkl                  # StandardScaler treinado
-│   └── metadata.json               # Mapeamentos e metadados
+│   ├── modelo_obesidade.pkl        # Modelo GBM treinado (todas as features)
+│   ├── modelo_comportamental.pkl   # Modelo GBM sem peso/altura (triagem preventiva)
+│   ├── scaler.pkl                  # StandardScaler treinado no conjunto de treino
+│   └── metadata.json               # Mapeamentos, features e métricas
 ├── notebooks/
-│   ├── 01_EDA_Obesidade.py         # Análise exploratória
+│   ├── 01_EDA_Obesidade.py         # Análise exploratória completa
 │   ├── 02_Feature_Engineering.py   # Pipeline de transformação
-│   └── 03_Modelo_ML.py             # Treinamento e avaliação
+│   ├── 03_Modelo_ML.py             # Treinamento e avaliação de 4 modelos
+│   └── 04_Analise_Avancada.py      # Modelo comportamental + fairness + limitações
 └── images/
     ├── eda_visao_geral.png
     ├── eda_habitos.png
     ├── feature_engineering.png
-    └── modelo_ml.png
+    ├── modelo_ml.png
+    └── analise_avancada.png
 ```
 
 ---
@@ -65,27 +87,31 @@ tech-challenge-fase4/
 ## 🔬 Pipeline de Machine Learning
 
 ### Etapa 1 — Análise Exploratória (EDA)
-- Distribuição das 7 classes de obesidade (dataset balanceado, razão max/min = 1.29)
-- Análise de correlações entre hábitos e nível de obesidade
-- Visualizações: boxplot de IMC, scatter peso×altura, histogramas de hábitos
+- Dataset balanceado: 7 classes com distribuição entre 12–17% cada (razão max/min = 1.29)
+- Zero valores nulos em todas as 17 colunas
+- Insights: histórico familiar positivo em 90%+ dos pacientes com Obesidade Tipo III; FAF médio cai de 1.25 (peso normal) para 0.64 (Obesidade III)
 
 ### Etapa 2 — Feature Engineering
-| Transformação | Colunas |
+
+| Transformação | Colunas envolvidas |
 |---|---|
-| Arredondamento (decimais → inteiros) | FCVC, NCP, CH2O, FAF, TUE |
+| Arredondamento de decimais para inteiros | FCVC, NCP, CH2O, FAF, TUE |
 | Label Encoding binário (0/1) | Gender, family_history, FAVC, SMOKE, SCC |
 | Ordinal Encoding (frequência 0–3) | CAEC, CALC |
-| One-Hot Encoding | MTRANS (5 categorias) |
-| StandardScaler (fit só no treino) | Todas as features numéricas |
+| One-Hot Encoding | MTRANS → 5 colunas |
+| StandardScaler (fit apenas no treino) | Todas as features numéricas |
+| Target Encoding | Obesity → 0 a 6 (ordem clínica crescente) |
 
-### Etapa 3 — Treinamento e Seleção do Modelo
+**Resultado:** 20 features | 1.688 registros treino | 423 registros teste
 
-| Modelo | CV Accuracy | Test Accuracy |
-|---|---|---|
-| Logistic Regression | 86.7% | 87.7% |
-| Random Forest | 94.2% | 93.9% |
-| **Gradient Boosting** | **96.3%** | **95.7%** ← escolhido |
-| SVM (RBF) | 85.5% | 86.1% |
+### Etapa 3 — Comparação de modelos
+
+| Modelo | CV Accuracy | Test Accuracy | F1-macro |
+|---|---|---|---|
+| Logistic Regression | 86.7% | 87.7% | 87.3% |
+| Random Forest | 94.2% | 93.9% | 93.7% |
+| **Gradient Boosting** | **96.3%** | **95.7%** | **95.6%** |
+| SVM (RBF) | 85.5% | 86.1% | 85.8% |
 
 **Hiperparâmetros do modelo final:**
 ```python
@@ -98,19 +124,47 @@ GradientBoostingClassifier(
 )
 ```
 
-### Etapa 4 — Deploy (Streamlit)
-- **Aba 1 — Sistema Preditivo:** formulário com dados do paciente, resultado do diagnóstico, probabilidade por classe e interpretação clínica
-- **Aba 2 — Dashboard Analítico:** 5 KPIs, 6 gráficos interativos (Plotly) e 6 insights para a equipe médica
+### Etapa 4 — Análise avançada
+
+**Modelo comportamental (sem peso e altura):**
+Treinado para validar que os hábitos de vida têm poder preditivo real independente do IMC.
+- Acurácia: **79.0%** — supera a meta de 75% apenas com dados comportamentais
+- Aplicação clínica: triagem preventiva quando exame físico ainda não foi realizado
+
+**Análise de fairness:**
+- Feminino (n=201): 97.5% | Masculino (n=222): 95.0% | Δ = 2.5pp ✅
 
 ---
 
-## 📊 Principais insights para a equipe médica
+## 📊 O app Streamlit tem 3 abas
 
-1. **Histórico familiar** é o segundo preditor mais forte — 90%+ dos pacientes com Obesidade Tipo III têm histórico familiar positivo
-2. **Sedentarismo** acompanha a progressão da obesidade — FAF médio cai de 1.25 (peso normal) para 0.64 (Obesidade III)
-3. **Alimentação calórica** (FAVC e CAEC) cresce proporcionalmente ao nível de obesidade
-4. **Transporte ativo** (caminhar) é mais comum em pessoas com peso normal
-5. **Hidratação** e **monitoramento calórico** estão associados a menores níveis de obesidade
+**🔬 Sistema Preditivo**
+- Formulário completo com dados do paciente
+- Resultado com diagnóstico, confiança e orientação clínica
+- Lista automática de fatores de risco identificados
+- Modo comportamental (toggle) para triagem sem peso/altura
+
+**📊 Dashboard Analítico**
+- Filtros por gênero, faixa etária e classe de obesidade
+- 5 KPIs com contexto comparativo (incluindo média nacional IBGE)
+- 6 gráficos interativos com Plotly
+- 6 insights em linguagem de negócio para a equipe médica
+
+**🧠 Transparência do Modelo**
+- Comparativo modelo completo vs comportamental
+- Análise de fairness documentada
+- 5 limitações conhecidas explicitadas
+- Parâmetros e métricas de treinamento
+
+---
+
+## 💡 Principais insights para a equipe médica
+
+1. **Histórico familiar:** 90%+ dos pacientes com Obesidade Tipo III têm histórico familiar positivo — triagem preventiva em familiares é recomendada
+2. **Sedentarismo:** FAF médio cai consistentemente com o aumento da obesidade — intervenção de exercício é a ação mais impactante
+3. **Alimentação:** Consumo de alimentos calóricos (FAVC) e lanches entre refeições (CAEC) crescem proporcionalmente ao nível de obesidade
+4. **Prevalência:** 46% dos pacientes do dataset têm obesidade — proporção acima da média nacional de 22% (IBGE 2023)
+5. **Transporte:** Uso de automóvel é mais prevalente em pacientes obesos; caminhar é mais comum em pessoas com peso normal
 
 ---
 
@@ -124,25 +178,32 @@ cd data-analytics/tech-challenge-fase4
 # 2. Instale as dependências
 pip install -r requirements.txt
 
-# 3. Execute os notebooks (opcional — modelos já estão em models/)
+# 3. (Opcional) Rode os notebooks em ordem
 python3 notebooks/01_EDA_Obesidade.py
 python3 notebooks/02_Feature_Engineering.py
 python3 notebooks/03_Modelo_ML.py
+python3 notebooks/04_Analise_Avancada.py
 
-# 4. Rode o app
+# 4. Suba o app
 streamlit run app.py
 ```
 
----
-
-## 🛠️ Tecnologias utilizadas
-
-![Python](https://img.shields.io/badge/Python-3.11-blue)
-![Streamlit](https://img.shields.io/badge/Streamlit-1.32-red)
-![scikit-learn](https://img.shields.io/badge/scikit--learn-1.3-orange)
-![Plotly](https://img.shields.io/badge/Plotly-5.18-purple)
-![Pandas](https://img.shields.io/badge/Pandas-2.0-green)
+> Os modelos já estão pré-treinados em `models/`. Os passos 3 são opcionais — servem para reproduzir o pipeline completo.
 
 ---
 
-*FIAP PósTech — Data Analytics | Tech Challenge Fase 4 | 2026*
+## 🛠️ Tecnologias
+
+![Python](https://img.shields.io/badge/Python-3776AB?style=flat&logo=python&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Streamlit-FF4B4B?style=flat&logo=streamlit&logoColor=white)
+![scikit-learn](https://img.shields.io/badge/scikit--learn-F7931E?style=flat&logo=scikit-learn&logoColor=white)
+![Plotly](https://img.shields.io/badge/Plotly-3F4F75?style=flat&logo=plotly&logoColor=white)
+![Pandas](https://img.shields.io/badge/Pandas-150458?style=flat&logo=pandas&logoColor=white)
+![NumPy](https://img.shields.io/badge/NumPy-013243?style=flat&logo=numpy&logoColor=white)
+
+---
+
+<div align="center">
+<sub>FIAP PósTech · Data Analytics · Tech Challenge Fase 4 · 2026</sub><br>
+<sub>⚕️ Ferramenta de apoio à decisão clínica — não substitui avaliação médica profissional</sub>
+</div>
