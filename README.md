@@ -1,10 +1,10 @@
-# 📊 FIAP PósTech — Data Analytics
+# 📊 FIAP PósTech · Data Analytics
 
 Repositório com os projetos desenvolvidos durante o curso de **Data Analytics** da FIAP PósTech.
 
 ---
 
-## 🏥 Tech Challenge Fase 4 — Sistema Preditivo de Obesidade
+## 🏥 Tech Challenge Fase 4: Sistema Preditivo de Obesidade
 
 > Modelo de Machine Learning para auxiliar equipes médicas no diagnóstico de obesidade, com dashboard analítico interativo.
 
@@ -17,7 +17,7 @@ Repositório com os projetos desenvolvidos durante o curso de **Data Analytics**
 
 ---
 
-## 🎓 Tech Challenge Fase 5 — Datathon Passos Mágicos
+## 🎓 Tech Challenge Fase 5: Datathon Passos Mágicos
 
 > Modelo preditivo de risco de defasagem escolar para a Associação Passos Mágicos, com sistema de alerta precoce e priorização de intervenção.
 

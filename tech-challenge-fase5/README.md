@@ -2,7 +2,7 @@
 
 # 🎓 Sistema de Alerta Precoce de Defasagem
 
-**FIAP PósTech — Data Analytics | Tech Challenge Fase 5 — Datathon Passos Mágicos**
+**FIAP PósTech · Data Analytics | Tech Challenge Fase 5 · Datathon Passos Mágicos**
 
 [![App ao vivo](https://img.shields.io/badge/🚀_App_Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://data-analytics-tech-challenge-fase5.streamlit.app/)
 [![ROC-AUC](https://img.shields.io/badge/ROC--AUC-0.86-4CAF50?style=for-the-badge)]()
@@ -19,7 +19,7 @@ Datathon da Fase 5 do curso de **Data Analytics da FIAP PósTech**, com dados re
 **Associação Passos Mágicos**. A base **PEDE** (Pesquisa Extensiva do Desenvolvimento Educacional)
 traz um retrato anual de cada aluno (2022–2024). Usamos o `RA` para ligar o mesmo aluno entre anos e
 construir um problema **longitudinal**: a partir do retrato do aluno no ano N, prever se ele estará
-**defasado no ano N+1** — permitindo à ONG priorizar a intervenção *antes* da queda.
+**defasado no ano N+1**, permitindo à ONG priorizar a intervenção *antes* da queda.
 
 > 🎓 **Aviso:** Esta ferramenta é um sistema de apoio à decisão pedagógica e não substitui a
 > avaliação da equipe da ONG.
@@ -51,10 +51,10 @@ construir um problema **longitudinal**: a partir do retrato do aluno no ano N, p
 | Métrica | Valor |
 |---|---|
 | Algoritmo | HistGradientBoostingClassifier |
-| ROC-AUC — teste temporal (2023→2024) | **0.859** |
-| PR-AUC — teste temporal | **0.814** |
-| ROC-AUC — validação cruzada (5-fold) | **0.908 ± 0.010** |
-| ROC-AUC — subgrupo "hoje em dia" (o alvo real) | **0.867** |
+| ROC-AUC teste temporal (2023→2024) | **0.859** |
+| PR-AUC teste temporal | **0.814** |
+| ROC-AUC validação cruzada (5-fold) | **0.908 ± 0.010** |
+| ROC-AUC subgrupo "hoje em dia" (o alvo real) | **0.867** |
 | Lift do top de risco vs. taxa-base | **≈ 3×** |
 | Recall no corte operacional (0.4) | **81%** (precisão 68%) |
 
@@ -87,34 +87,34 @@ tech-challenge-fase5/
 
 ## 🔬 Pipeline
 
-### Etapa 1 — Harmonização
+### Etapa 1: Harmonização
 `src/harmonizacao.py` lê as 3 abas do PEDE (2022–2024), que têm **esquemas divergentes**
-(colunas renomeadas, formatos de fase distintos — "3", "FASE 3", "3A"), e as unifica numa base
+(colunas renomeadas, formatos de fase distintos como "3", "FASE 3" ou "3A"), e as unifica numa base
 tidy: uma linha por (aluno, ano). O `RA` é a chave estável que liga o mesmo aluno ao longo do tempo.
 **Resultado:** 3.030 registros aluno-ano.
 
-### Etapa 2 — Análise Exploratória (EDA)
+### Etapa 2: Análise Exploratória (EDA)
 `notebooks/01_EDA_storytelling.ipynb` responde as perguntas de negócio 1–8, 10 e 11:
 
 | Pergunta | Achado |
 |---|---|
-| Q1 — Adequação ao nível | Adequados/adiantados sobem de 30,1% (2022) para 53,8% (2024); casos severos praticamente eliminados |
-| Q2 — Desempenho (IDA) | Vale na fase 3 (Fund. II) — transição para a adolescência é o ponto mais sensível |
-| Q3/Q4 — Engajamento vs. autoavaliação | IEG correlaciona com IDA e IPV (r=0,54); IAA descola da performance real (r≈0,22) |
-| Q5 — Psicossocial (IPS) | Sem evidência de que antecede quedas — dimensão ortogonal às demais |
-| Q6/Q7 — Psicopedagógico e Ponto de Virada | IPV é puxado por IPP (0,61), IEG (0,56) e IDA (0,56) |
-| Q8 — Alavancas do INDE | IDA (0,42) e IEG (0,35) têm o maior retorno marginal |
-| Q10 — Efetividade (mesma coorte, 468 alunos) | Defasagem melhora de −0,85 para −0,23; INDE fica estável — fechar o gap série-idade é o impacto mais nítido do programa |
-| Q11 — Insight próprio | Existe um subgrupo previsível de risco — porta de entrada para o modelo (Q9) |
+| Q1: Adequação ao nível | Adequados/adiantados sobem de 30,1% (2022) para 53,8% (2024); casos severos praticamente eliminados |
+| Q2: Desempenho (IDA) | Vale na fase 3 (Fund. II), transição para a adolescência é o ponto mais sensível |
+| Q3/Q4: Engajamento vs. autoavaliação | IEG correlaciona com IDA e IPV (r=0,54); IAA descola da performance real (r≈0,22) |
+| Q5: Psicossocial (IPS) | Sem evidência de que antecede quedas; dimensão ortogonal às demais |
+| Q6/Q7: Psicopedagógico e Ponto de Virada | IPV é puxado por IPP (0,61), IEG (0,56) e IDA (0,56) |
+| Q8: Alavancas do INDE | IDA (0,42) e IEG (0,35) têm o maior retorno marginal |
+| Q10: Efetividade (mesma coorte, 468 alunos) | Defasagem melhora de −0,85 para −0,23; INDE fica estável. Fechar o gap série-idade é o impacto mais nítido do programa |
+| Q11: Insight próprio | Existe um subgrupo previsível de risco, porta de entrada para o modelo (Q9) |
 
-### Etapa 3 — Base de modelagem
+### Etapa 3: Base de modelagem
 `src/modelagem_base.py` une, pelo `RA`, as features do aluno no ano N aos desfechos do ano N+1,
 operacionalizando o problema como **sistema de alerta precoce**. Deriva o rótulo
 `y_risco = (defasagem_next < 0)`. **Resultado:** 1.365 pares N→N+1.
 
-### Etapa 4 — Modelo preditivo (pergunta 9)
+### Etapa 4: Modelo preditivo (pergunta 9)
 `notebooks/02_modelo_risco.ipynb` / `src/modelo.py`:
-- **Split temporal** (não aleatório): treina em pares 2022→2023 (600), testa em 2023→2024 (765) —
+- **Split temporal** (não aleatório): treina em pares 2022→2023 (600), testa em 2023→2024 (765);
   simula o uso real de prever uma coorte futura, sob deslocamento real de prevalência (61% → 40%).
 - **Comparação de modelos:**
 
@@ -127,13 +127,13 @@ operacionalizando o problema como **sistema de alerta precoce**. Deriva o rótul
 - **HistGradientBoostingClassifier** foi escolhido por lidar nativamente com nulos (indicadores
   como IDA/IEG faltam para parte dos alunos) sem precisar de imputação.
 - **Calibração e limiar de alerta:** corte operacional em 0.4 cobre 81% dos casos reais de risco com
-  68% de precisão — equilíbrio adequado para priorizar com recursos limitados.
-- **O resultado que importa:** restrito só a alunos **hoje em dia** (o cenário real de uso — prevenir
+  68% de precisão, equilíbrio adequado para priorizar com recursos limitados.
+- **O resultado que importa:** restrito só a alunos **hoje em dia** (o cenário real de uso: prevenir
   quem ainda não caiu), o modelo alcança AUC ≈ 0.867 e o quintil de maior risco cai ~3× mais que a
   taxa-base.
 - **Interpretabilidade:** posição estrutural (fase, defasagem atual, idade) domina a previsão; entre
   os indicadores comportamentais, o **IPV (ponto de virada)** lidera. Gênero é irrelevante
-  (importância 0.001) — sem discriminação por sexo.
+  (importância 0.001), sem discriminação por sexo.
 
 **Hiperparâmetros do modelo final:**
 ```python
@@ -142,7 +142,7 @@ HistGradientBoostingClassifier(
 )
 ```
 
-> O app **não usa artefato `.pkl`** — treina o modelo no startup via `@st.cache_resource`, padrão
+> O app **não usa artefato `.pkl`**: treina o modelo no startup via `@st.cache_resource`, padrão
 > que elimina incompatibilidades de versão do scikit-learn no deploy (lição aprendida na Fase 4).
 
 ---
@@ -155,7 +155,7 @@ HistGradientBoostingClassifier(
 
 **📋 Priorização da turma**
 - Pontua toda a coorte de 2024 pelo risco previsto para o próximo ciclo
-- Destaque para alunos **hoje em dia mas em risco** — onde a intervenção precoce mais rende
+- Destaque para alunos **hoje em dia mas em risco**, onde a intervenção precoce mais rende
 - Lista ordenável e exportável em CSV para a equipe da ONG
 
 **ℹ️ Sobre o modelo**
@@ -168,14 +168,14 @@ HistGradientBoostingClassifier(
 ## 💡 Principais achados
 
 1. **O programa fecha o gap série-idade.** Na mesma coorte (468 alunos nos 3 anos), a defasagem
-   melhora de −0,85 para −0,23 — o impacto mais nítido e comprovado do programa.
+   melhora de −0,85 para −0,23: o impacto mais nítido e comprovado do programa.
 2. **Engajamento e desempenho andam juntos**; autoavaliação e aspecto psicossocial são dimensões
    à parte, pouco correlacionadas com o desempenho real.
-3. **IDA + IEG são as maiores alavancas do INDE** — maior retorno marginal está em desempenho
+3. **IDA + IEG são as maiores alavancas do INDE**: maior retorno marginal está em desempenho
    acadêmico e engajamento, não em autoavaliação.
 4. **Existe um subgrupo previsível de risco.** Mesmo entre alunos hoje em dia, o modelo separa bem
-   quem tende a cair — priorizar o grupo de maior risco previsto rende ~3× a taxa-base de acerto.
-5. **O modelo não discrimina por gênero** — importância de gênero na previsão é praticamente nula
+   quem tende a cair; priorizar o grupo de maior risco previsto rende ~3× a taxa-base de acerto.
+5. **O modelo não discrimina por gênero**: importância de gênero na previsão é praticamente nula
    (0.001), um ponto relevante de equidade para uma ONG.
 
 ---
@@ -198,7 +198,7 @@ python3 src/modelagem_base.py     # gera data/processed/base_modelagem.csv
 streamlit run app.py
 ```
 
-> As bases processadas já estão versionadas em `data/processed/`. O passo 3 é opcional — serve para
+> As bases processadas já estão versionadas em `data/processed/`. O passo 3 é opcional, serve para
 > reproduzir a pipeline completa a partir da base bruta. O modelo não tem artefato `.pkl`: é treinado
 > no startup do app.
 
@@ -217,5 +217,5 @@ streamlit run app.py
 
 <div align="center">
 <sub>FIAP PósTech · Data Analytics · Tech Challenge Fase 5 · Datathon Passos Mágicos · 2026</sub><br>
-<sub>🎓 Ferramenta de apoio à decisão pedagógica — não substitui a avaliação da equipe da ONG</sub>
+<sub>🎓 Ferramenta de apoio à decisão pedagógica, não substitui a avaliação da equipe da ONG</sub>
 </div>

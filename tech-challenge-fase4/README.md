@@ -2,7 +2,7 @@
 
 # 🏥 Sistema Preditivo de Obesidade
 
-**FIAP PósTech — Data Analytics | Tech Challenge Fase 4**
+**FIAP PósTech · Data Analytics | Tech Challenge Fase 4**
 
 [![App ao vivo](https://img.shields.io/badge/🚀_App_Streamlit-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://data-analytics-fase4.streamlit.app/)
 [![Acurácia](https://img.shields.io/badge/Acurácia-95.7%25-4CAF50?style=for-the-badge)]()
@@ -52,7 +52,7 @@ Sistema de apoio à decisão clínica desenvolvido para o Tech Challenge da Fase
 | F1-score macro | **95.6%** |
 | Validação cruzada (5-fold) | **96.3% ± 0.3%** |
 | Meta FIAP (>75%) | ✅ Superada em +20.7pp |
-| Fairness (Feminino vs Masculino) | ✅ Δ 2.5pp — dentro do limite aceitável |
+| Fairness (Feminino vs Masculino) | ✅ Δ 2.5pp, dentro do limite aceitável |
 
 ---
 
@@ -86,12 +86,12 @@ tech-challenge-fase4/
 
 ## 🔬 Pipeline de Machine Learning
 
-### Etapa 1 — Análise Exploratória (EDA)
+### Etapa 1: Análise Exploratória (EDA)
 - Dataset balanceado: 7 classes com distribuição entre 12–17% cada (razão max/min = 1.29)
 - Zero valores nulos em todas as 17 colunas
 - Insights: histórico familiar positivo em 90%+ dos pacientes com Obesidade Tipo III; FAF médio cai de 1.25 (peso normal) para 0.64 (Obesidade III)
 
-### Etapa 2 — Feature Engineering
+### Etapa 2: Feature Engineering
 
 | Transformação | Colunas envolvidas |
 |---|---|
@@ -104,7 +104,7 @@ tech-challenge-fase4/
 
 **Resultado:** 20 features | 1.688 registros treino | 423 registros teste
 
-### Etapa 3 — Comparação de modelos
+### Etapa 3: Comparação de modelos
 
 | Modelo | CV Accuracy | Test Accuracy | F1-macro |
 |---|---|---|---|
@@ -124,11 +124,11 @@ GradientBoostingClassifier(
 )
 ```
 
-### Etapa 4 — Análise avançada
+### Etapa 4: Análise avançada
 
 **Modelo comportamental (sem peso e altura):**
 Treinado para validar que os hábitos de vida têm poder preditivo real independente do IMC.
-- Acurácia: **79.0%** — supera a meta de 75% apenas com dados comportamentais
+- Acurácia: **79.0%**, supera a meta de 75% apenas com dados comportamentais
 - Aplicação clínica: triagem preventiva quando exame físico ainda não foi realizado
 
 **Análise de fairness:**
@@ -160,10 +160,10 @@ Treinado para validar que os hábitos de vida têm poder preditivo real independ
 
 ## 💡 Principais insights para a equipe médica
 
-1. **Histórico familiar:** 90%+ dos pacientes com Obesidade Tipo III têm histórico familiar positivo — triagem preventiva em familiares é recomendada
-2. **Sedentarismo:** FAF médio cai consistentemente com o aumento da obesidade — intervenção de exercício é a ação mais impactante
+1. **Histórico familiar:** 90%+ dos pacientes com Obesidade Tipo III têm histórico familiar positivo, triagem preventiva em familiares é recomendada
+2. **Sedentarismo:** FAF médio cai consistentemente com o aumento da obesidade, intervenção de exercício é a ação mais impactante
 3. **Alimentação:** Consumo de alimentos calóricos (FAVC) e lanches entre refeições (CAEC) crescem proporcionalmente ao nível de obesidade
-4. **Prevalência:** 46% dos pacientes do dataset têm obesidade — proporção acima da média nacional de 22% (IBGE 2023)
+4. **Prevalência:** 46% dos pacientes do dataset têm obesidade, proporção acima da média nacional de 22% (IBGE 2023)
 5. **Transporte:** Uso de automóvel é mais prevalente em pacientes obesos; caminhar é mais comum em pessoas com peso normal
 
 ---
@@ -188,7 +188,7 @@ python3 notebooks/04_Analise_Avancada.py
 streamlit run app.py
 ```
 
-> Os modelos já estão pré-treinados em `models/`. Os passos 3 são opcionais — servem para reproduzir o pipeline completo.
+> Os modelos já estão pré-treinados em `models/`. Os passos 3 são opcionais, servem para reproduzir o pipeline completo.
 
 ---
 
@@ -205,5 +205,5 @@ streamlit run app.py
 
 <div align="center">
 <sub>FIAP PósTech · Data Analytics · Tech Challenge Fase 4 · 2026</sub><br>
-<sub>⚕️ Ferramenta de apoio à decisão clínica — não substitui avaliação médica profissional</sub>
+<sub>⚕️ Ferramenta de apoio à decisão clínica, não substitui avaliação médica profissional</sub>
 </div>
