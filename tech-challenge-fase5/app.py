@@ -67,6 +67,22 @@ modelo, auc_temporal, df_pares = carrega_modelo()
 st.title("🎓 Sistema de Alerta Precoce de Defasagem")
 st.caption("Associação Passos Mágicos · modelo preditivo de risco para o próximo ciclo letivo")
 
+with st.expander("Sobre o projeto", expanded=False):
+    st.markdown(
+        "A partir do retrato de um aluno em um ano, o modelo estima a probabilidade de ele entrar "
+        "em **defasagem no ciclo seguinte** — permitindo à Passos Mágicos **priorizar a intervenção "
+        "antes da queda**. Treinado sobre a base PEDE (2022–2024) com validação temporal "
+        f"(ROC-AUC {auc_temporal:.3f}). Três frentes: predição individual, priorização da turma e "
+        "transparência do modelo."
+    )
+
+st.info(
+    "🔒 **Ferramenta de apoio à decisão.** Os escores orientam o acolhimento pedagógico e psicossocial "
+    "— **não substituem** a avaliação da equipe e **não devem rotular** o aluno. Trabalha com dados "
+    "sensíveis (RA e indicadores): uso restrito e responsável.",
+    icon="ℹ️",
+)
+
 aba1, aba2, aba3 = st.tabs(["🔎 Predição individual",
                             "📋 Priorização da turma",
                             "ℹ️ Sobre o modelo"])
@@ -137,9 +153,13 @@ with aba2:
     tabela = tabela.rename(columns={"ra": "Aluno", "fase_num": "Fase", "idade": "Idade",
                                     "defasagem": "Defasagem", "risco": "Risco (%)", "faixa": "Faixa"})
     st.dataframe(tabela, use_container_width=True, hide_index=True, height=430)
-    st.download_button("⬇️ Baixar lista priorizada (CSV)",
-                       tabela.to_csv(index=False).encode("utf-8"),
-                       "priorizacao_risco_defasagem.csv", "text/csv")
+    cexp1, cexp2 = st.columns([1, 2])
+    cexp1.download_button("⬇️  Exportar lista priorizada (CSV)",
+                          tabela.to_csv(index=False).encode("utf-8"),
+                          "priorizacao_risco_defasagem.csv", "text/csv",
+                          type="primary", use_container_width=True)
+    cexp2.caption("Lista com dados sensíveis de alunos — compartilhe apenas com a equipe pedagógica "
+                  "responsável e use como ponto de partida para o acolhimento, não como classificação.")
 
 # =================================================================== ABA 3
 with aba3:
